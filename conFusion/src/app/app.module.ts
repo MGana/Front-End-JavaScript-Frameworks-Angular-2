@@ -23,6 +23,7 @@ import { PromotionService } from './services/promotion.service';
 import { LeaderService } from './services/leader.service';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { LoginComponent } from './login/login.component';
 
 
 
@@ -35,10 +36,12 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     FooterComponent,
     AboutComponent,
     HomeComponent,
-    ContactComponent
+    ContactComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     MaterialModule,
@@ -46,6 +49,11 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     AppRoutingModule
   ],
   providers: [DishService, PromotionService, LeaderService],
+  entryComponents: [
+        LoginComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+//This entryComponent specifies a list of components that are not directly used in our application part will be triggered by another part of the application.

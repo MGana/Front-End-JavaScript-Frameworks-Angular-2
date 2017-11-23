@@ -12,6 +12,7 @@ import { DishService } from '../services/dish.service';
 export class MenuComponent implements OnInit {
 
   dishes: Dish[];
+  errMess: string;
 
 
   constructor(private dishService: DishService,
@@ -19,7 +20,9 @@ export class MenuComponent implements OnInit {
 //when you have a service you are injecting services like this here, but when you have a value, when you inject the value by using the @Inject decorator
 
   ngOnInit() {
-    this.dishService.getDishes().subscribe(dishes => this.dishes = dishes);
+    this.dishService.getDishes()
+    .subscribe(dishes => this.dishes = dishes,
+      errmess => this.errMess = <any>errmess);
   }
 
 

@@ -20,6 +20,7 @@ import { Comment } from '../shared/comment';
 export class DishdetailComponent implements OnInit {
 
   dish: Dish;
+  dishcopy = null;
   dishIds: number[];
   prev: number;
   next: number;
@@ -54,7 +55,7 @@ export class DishdetailComponent implements OnInit {
     this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
     this.route.params
       .switchMap((params: Params) => this.dishservice.getDish(+params['id']))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },
+      .subscribe(dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id); },
       errmess => this.errMess = <any>errmess);
   }
 
@@ -105,13 +106,16 @@ export class DishdetailComponent implements OnInit {
     this.newcomment = this.commentForm.value;
     this.newcomment.date = new Date().toISOString();             
     console.log(this.newcomment);
-    this.dish.comments.push(this.newcomment);
+    //dishcopy is a restangular object
+    this.dishcopy.comments.push(this.newcomment);
+    this.dishcopy.save()
+      .subscribe(dish => { this.dish = dish; console.log(this.dish); });
     this.commentForm.reset({
       author: '',
       rating: 5,
       comment: ''
     });
   }
-
-    
+  // I will define an arrow function inside this dish. And then in the arrow function, what I'm going to do is to say this.dish = dish, at this point. So what I am implying is that, when the comments are pushed into the dishcopy object, and I save the dishcopy object to the server, and the server confirms that the save is done successfully. Then it'll return the dish back to me within this observable. And then at that point, I am 100% sure that the comment that I have submitted has been successfully saved to the server side. Then it is safe for me to update the dish object to reflect the fact that the new dish object with the comment included in the dish has been returned to me. And so that value will be saved back to this dish object. 
+  //Earlier I was pushing the dish comment directly into the this.dish. And so that immediately resulted in the UI being updated, but that is not the right way to do that.    
 }

@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div fxFlex *ngIf="dishes">
+    <div fxFlex *ngIf="dishes" [@expand]>
         <!--The md-gridlist allows me to layout the content as a grid of items rather than a list of items. -->
         <md-grid-list cols="2" rowHeight="200px">
             <md-grid-tile *ngFor="let dish of dishes" [routerLink]="['/dishdetail', dish.id]" appHighlight>

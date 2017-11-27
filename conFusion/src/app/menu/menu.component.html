@@ -13,7 +13,7 @@
     <div fxFlex *ngIf="dishes">
         <!--The md-gridlist allows me to layout the content as a grid of items rather than a list of items. -->
         <md-grid-list cols="2" rowHeight="200px">
-            <md-grid-tile *ngFor="let dish of dishes" [routerLink]="['/dishdetail', dish.id]">
+            <md-grid-tile *ngFor="let dish of dishes" [routerLink]="['/dishdetail', dish.id]" appHighlight>
                 <img height="200px" src="{{BaseURL + dish.image}}" alt={{dish.name}}>
                 <md-grid-tile-footer>
                     <h1 md-line>{{dish.name | uppercase}}</h1>

@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Feedback, ContactType } from '../shared/feedback';
 
-import { flyInOut } from '../animations/app.animation';
+import { visibility, flyInOut, expand } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
@@ -15,7 +16,9 @@ import { flyInOut } from '../animations/app.animation';
   'style': 'display: block;'
   },
   animations: [
-    flyInOut()
+    visibility(),
+    flyInOut(),
+    expand()
   ]
 })
 export class ContactComponent implements OnInit {
@@ -23,6 +26,8 @@ export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
   contactType = ContactType;
+  feedbackcopy = null;
+  showspinner= false;
 
 // Inside the onValueChanged, the way the code is written is that if any error is detected, a string containing the message corresponding to that error will be added into this JavaScript object.
   formErrors = {
@@ -54,7 +59,8 @@ export class ContactComponent implements OnInit {
   };
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+             private feedbackService: FeedbackService,) {
     this.createForm();
   }
 
@@ -96,7 +102,18 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
-    this.feedback = this.feedbackForm.value;
+    this.feedbackcopy = this.feedbackForm.value;
+    this.showspinner= true;
+    this.feedbackService.submitFeedback(this.feedbackcopy)
+      .subscribe( feedback => { 
+                 this.feedback = feedback; 
+                 console.log(this.feedback);
+                 this.showspinner= false;
+                 setTimeout( () => {
+                        this.feedback = null;
+                    }, 5000);
+                 });
+                 
     console.log(this.feedback);
     this.feedbackForm.reset({
       firstname: '',
